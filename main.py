@@ -30,6 +30,7 @@ def download_map(map_id):
         notes: list[genanki.Note] = []
         for meta in simplified:
             meta_images: list[tuple[str, bytes, str]] = []
+
             try:
                 for image in meta.images:
                     image_bytes = learnable_meta.download_image(image)
@@ -44,10 +45,12 @@ def download_map(map_id):
                     images.append(meta_image[0])
 
                 question = anki.images_to_question([meta_image[2] for meta_image in meta_images])
-                notes.append(anki.to_note(question, meta.note))
+                answer = f"<p>{meta.name}</p>" + "\n" + meta.note
+                notes.append(anki.to_note(question, answer))
                 
             except:
                 continue
+
         deck_name = f"{name} by {author}"
         deck = anki.to_deck(deck_name, notes)
         package_path = Path(os.path.join(OUTPUT_DIR, normalize_package_name(deck_name)))

@@ -78,6 +78,7 @@ def download_map(map_id: str) -> str:
     base_url = "https://learnablemeta.com/maps/"
     url = base_url + map_id
     res = requests.get(url)
+    res.encoding = "utf-8"
     return res.text
 
 def download_image(url: str) -> bytes:
